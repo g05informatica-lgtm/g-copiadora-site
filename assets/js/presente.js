@@ -176,12 +176,13 @@ function preencherConquistas(inicio) {
 
   let desbloqueadas = 0;
   grid.innerHTML = AMZ_MILESTONES
-    .map((m) => {
+    .map((m, i) => {
       const ok = diasTotais >= m.dias;
       if (ok) desbloqueadas++;
+      const cor = `c${(i % 4) + 1}`;
       return `
-        <div class="achievement ${ok ? '' : 'locked'}">
-          <div class="icon">${ok ? m.icone : '🔒'}</div>
+        <div class="achievement ${ok ? cor : 'locked'}">
+          <div class="icon-badge">${ok ? m.icone : '🔒'}</div>
           <div class="title">${m.titulo}</div>
         </div>
       `;
@@ -202,17 +203,33 @@ function preencherLinhaDoTempo(dados) {
     return;
   }
 
-  timeline.innerHTML = dados.linha
-    .map(
-      (item) => `
-      <div class="timeline-item">
+  const fotos = dados.fotos || [];
+
+  dados.linha.forEach((item, i) => {
+    const div = document.createElement('div');
+    div.className = 'timeline-item';
+
+    let html = `<div class="timeline-marker">${i + 1}</div>`;
+    if (fotos[i]) {
+      html += `<img class="timeline-photo" alt="" />`;
+    }
+    html += `
+      <div class="timeline-text">
         ${item.data ? `<div class="date">${formatarData(item.data)}</div>` : ''}
         <h4>${escapeHtml(item.titulo)}</h4>
         ${item.texto ? `<p>${escapeHtml(item.texto)}</p>` : ''}
       </div>
-    `
-    )
-    .join('');
+    `;
+    div.innerHTML = html;
+
+    if (fotos[i]) {
+      const img = div.querySelector('.timeline-photo');
+      img.src = fotos[i];
+      img.addEventListener('error', () => img.remove());
+    }
+
+    timeline.appendChild(div);
+  });
 }
 
 /* ---------- Retrospectiva ---------- */
