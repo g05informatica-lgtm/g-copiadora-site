@@ -177,42 +177,20 @@
 
           <!-- Passo 6: Pagamento -->
           <div class="form-step" data-step="6">
-            <h2>Pagamento via Pix</h2>
-            <p>Escaneie o QR Code com o app do seu banco ou copie a chave Pix abaixo.</p>
+            <h2>Confirmar e pagar</h2>
+            <p>Pagamento 100% seguro pelo Mercado Pago. Seu presente é liberado automaticamente após a confirmação.</p>
 
             <div class="pix-box">
               <div class="plan-chosen" id="plano-escolhido"></div>
               <div class="amount-display" id="valor-pix"></div>
-              <img id="qr-pix" alt="QR Code Pix" width="220" height="220" />
-              <div class="pix-key-row">
-                <input type="text" id="chave-pix" readonly />
-                <button type="button" class="btn btn-secondary" id="btn-copiar-chave">Copiar</button>
-              </div>
-              <span class="hint">Após confirmar o pagamento no seu banco, clique no botão abaixo para gerar sua página na hora.</span>
+              <span class="hint">Você será levado para o ambiente seguro do Mercado Pago, onde pode pagar por <strong>Pix, cartão ou boleto</strong>. Assim que o pagamento cair, o link do presente aparece para você na hora.</span>
             </div>
+
+            <div class="error-message" id="pagamento-erro"></div>
 
             <div class="form-nav">
               <button type="button" class="btn btn-secondary prev">← Voltar</button>
-              <button type="button" class="btn btn-primary" id="btn-gerar">Já paguei, gerar minha página 🎁</button>
-            </div>
-          </div>
-
-          <!-- Passo 7: Resultado -->
-          <div class="form-step" data-step="7">
-            <div class="result-box">
-              <div class="emoji-big">🎉</div>
-              <h2>Seu presente está pronto!</h2>
-              <p>Copie o link abaixo e compartilhe com quem você ama.</p>
-
-              <div class="link-row">
-                <input type="text" id="link-gerado" readonly />
-                <button type="button" class="btn btn-secondary" id="btn-copiar-link">Copiar</button>
-              </div>
-
-              <div class="result-actions">
-                <a id="btn-abrir" href="#" target="_blank" class="btn btn-primary">Abrir presente 🎁</a>
-                <a id="btn-whatsapp-share" href="#" target="_blank" class="btn btn-whatsapp">Enviar pelo WhatsApp</a>
-              </div>
+              <button type="button" class="btn btn-primary" id="btn-pagar">Pagar com Mercado Pago →</button>
             </div>
           </div>
 
@@ -223,7 +201,6 @@
 
   <script src="assets/js/config.js"></script>
   <script src="assets/js/encode.js"></script>
-  <script src="assets/js/pix.js"></script>
   <script src="assets/js/criar.js"></script>
 </body>
 </html>

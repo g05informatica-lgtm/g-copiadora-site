@@ -1422,3 +1422,18 @@ section {
   border-radius: 999px;
   backdrop-filter: blur(4px);
 }
+
+/* Spinner da página de confirmação de pagamento */
+.spinner {
+  width: 38px;
+  height: 38px;
+  margin: 20px auto 0;
+  border: 4px solid var(--border);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: amz-spin 0.9s linear infinite;
+}
+
+@keyframes amz-spin {
+  to { transform: rotate(360deg); }
+}

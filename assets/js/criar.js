@@ -153,47 +153,48 @@ document.addEventListener('DOMContentLoaded', () => {
   mostrarPasso(0);
 
   // -------------------------------------------------------
-  // Pagamento (Pix)
+  // Pagamento (Mercado Pago)
   // -------------------------------------------------------
   function prepararPagamento() {
-    const valor = planoAtual.preco;
     document.getElementById('plano-escolhido').textContent = `Plano ${planoAtual.nome}`;
-    document.getElementById('valor-pix').textContent = amzPrecoFormatado(valor);
-
-    const payload = gerarPayloadPix({
-      chave: AMORIZE_CONFIG.pix.chave,
-      nome: AMORIZE_CONFIG.pix.nome,
-      cidade: AMORIZE_CONFIG.pix.cidade,
-      valor,
-      descricao: `${AMORIZE_CONFIG.marca} ${planoAtual.nome}`,
-    });
-
-    document.getElementById('chave-pix').value = AMORIZE_CONFIG.pix.chave;
-    document.getElementById('qr-pix').src = gerarQrCodeUrl(payload);
+    document.getElementById('valor-pix').textContent = amzPrecoFormatado(planoAtual.preco);
   }
 
-  document.getElementById('btn-copiar-chave').addEventListener('click', () => {
-    copiarTexto(document.getElementById('chave-pix').value, 'btn-copiar-chave');
-  });
+  document.getElementById('btn-pagar').addEventListener('click', async () => {
+    const btn = document.getElementById('btn-pagar');
+    const erro = document.getElementById('pagamento-erro');
+    erro.classList.remove('show');
 
-  // -------------------------------------------------------
-  // Geração da página do presente
-  // -------------------------------------------------------
-  document.getElementById('btn-gerar').addEventListener('click', () => {
     const dados = coletarDados();
-    const link = `${location.origin}${location.pathname.replace('criar.html', '')}presente.html?d=${amzEncode(dados)}`;
+    // Guarda os dados do presente no navegador; serão usados na página de
+    // sucesso para montar o link DEPOIS que o pagamento for confirmado.
+    localStorage.setItem('amz_pending', amzEncode(dados));
 
-    document.getElementById('link-gerado').value = link;
-    document.getElementById('btn-abrir').href = link;
+    btn.disabled = true;
+    btn.textContent = 'Gerando pagamento...';
 
-    const textoCompartilhar = `💌 ${dados.de} preparou um presente especial pra você! Clique para abrir: ${link}`;
-    document.getElementById('btn-whatsapp-share').href = `https://wa.me/?text=${encodeURIComponent(textoCompartilhar)}`;
+    try {
+      const resp = await fetch('/api/criar-pagamento', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ planoId: planoAtual.id }),
+      });
 
-    mostrarPasso(steps.length - 1);
-  });
+      let data = {};
+      try { data = await resp.json(); } catch (_) { /* resposta não-JSON */ }
+      const destino = data.init_point || data.sandbox_init_point;
 
-  document.getElementById('btn-copiar-link').addEventListener('click', () => {
-    copiarTexto(document.getElementById('link-gerado').value, 'btn-copiar-link');
+      if (!resp.ok || !destino) {
+        throw new Error(data.erro || 'Não foi possível iniciar o pagamento.');
+      }
+
+      window.location.href = destino;
+    } catch (e) {
+      erro.textContent = `${e.message} (o pagamento online só funciona depois de publicar o site no Vercel com o Mercado Pago configurado).`;
+      erro.classList.add('show');
+      btn.disabled = false;
+      btn.textContent = 'Pagar com Mercado Pago →';
+    }
   });
 
   function coletarDados() {
@@ -233,14 +234,5 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!url) return '';
     const match = url.match(/(?:youtube\.com\/(?:watch\?v=|shorts\/|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
     return match ? match[1] : '';
-  }
-
-  function copiarTexto(texto, botaoId) {
-    navigator.clipboard.writeText(texto).then(() => {
-      const btn = document.getElementById(botaoId);
-      const original = btn.textContent;
-      btn.textContent = 'Copiado!';
-      setTimeout(() => (btn.textContent = original), 1500);
-    });
   }
 });

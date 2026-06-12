@@ -1,0 +1,8 @@
+# Segredos — nunca versionar
+.env
+.env.local
+.env.*.local
+
+# Dependências / build
+node_modules/
+.vercel/

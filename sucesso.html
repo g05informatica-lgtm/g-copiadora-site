@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pagamento — Amorize</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container">
+      <a href="index.html" class="logo">Amorize 💕</a>
+      <nav class="nav-links">
+        <a href="index.html">Início</a>
+      </nav>
+    </div>
+  </header>
+
+  <section style="padding: 60px 0 90px;">
+    <div class="container">
+      <div class="form-shell">
+
+        <!-- Estado: verificando -->
+        <div class="result-box" id="estado-verificando">
+          <div class="emoji-big">⏳</div>
+          <h2>Confirmando seu pagamento...</h2>
+          <p>Aguarde um instante enquanto confirmamos com o Mercado Pago. Se você pagou via Pix, pode levar alguns segundos.</p>
+          <div class="spinner" aria-hidden="true"></div>
+        </div>
+
+        <!-- Estado: aprovado -->
+        <div class="result-box" id="estado-aprovado" style="display:none;">
+          <div class="emoji-big">🎉</div>
+          <h2>Pagamento confirmado!</h2>
+          <p>Seu presente está pronto. Copie o link abaixo e compartilhe com quem você ama.</p>
+
+          <div class="link-row">
+            <input type="text" id="link-gerado" readonly />
+            <button type="button" class="btn btn-secondary" id="btn-copiar-link">Copiar</button>
+          </div>
+
+          <div class="result-actions">
+            <a id="btn-abrir" href="#" target="_blank" class="btn btn-primary">Abrir presente 🎁</a>
+            <a id="btn-whatsapp-share" href="#" target="_blank" class="btn btn-whatsapp">Enviar pelo WhatsApp</a>
+          </div>
+        </div>
+
+        <!-- Estado: pendente -->
+        <div class="result-box" id="estado-pendente" style="display:none;">
+          <div class="emoji-big">🕓</div>
+          <h2>Pagamento ainda não confirmado</h2>
+          <p>Se você acabou de pagar por Pix, aguarde alguns instantes e clique em verificar novamente.</p>
+          <button type="button" class="btn btn-primary" id="btn-verificar-novamente">Verificar novamente</button>
+        </div>
+
+        <!-- Estado: erro -->
+        <div class="result-box" id="estado-erro" style="display:none;">
+          <div class="emoji-big">😕</div>
+          <h2>Não encontramos seu pagamento</h2>
+          <p id="erro-msg">Algo deu errado ao confirmar o pagamento. Você pode tentar novamente.</p>
+          <a href="criar.html" class="btn btn-primary">Voltar e tentar de novo</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <script src="assets/js/encode.js"></script>
+  <script src="assets/js/sucesso.js"></script>
+</body>
+</html>
