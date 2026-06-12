@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Criar presente — Amorize</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container">
+      <a href="index.html" class="logo">Amorize 💕</a>
+      <nav class="nav-links">
+        <a href="index.html">Início</a>
+      </nav>
+    </div>
+  </header>
+
+  <section style="padding: 50px 0 80px;">
+    <div class="container">
+      <div class="form-shell">
+        <div class="progress-bar" id="progress-bar"></div>
+
+        <form id="form-presente">
+
+          <!-- Passo 1 -->
+          <div class="form-step active" data-step="1">
+            <h2>Conte a sua história</h2>
+            <p>Vamos começar com os dados básicos do casal.</p>
+
+            <div class="field">
+              <label for="de">Seu nome (quem está enviando)</label>
+              <input type="text" id="de" maxlength="30" required placeholder="Ex: João" />
+            </div>
+            <div class="field">
+              <label for="para">Nome de quem vai receber</label>
+              <input type="text" id="para" maxlength="30" required placeholder="Ex: Maria" />
+            </div>
+            <div class="field">
+              <label for="data">Data em que tudo começou</label>
+              <input type="date" id="data" required />
+            </div>
+
+            <div class="form-nav">
+              <span></span>
+              <button type="button" class="btn btn-primary next">Continuar →</button>
+            </div>
+          </div>
+
+          <!-- Passo 2 -->
+          <div class="form-step" data-step="2">
+            <h2>Mensagem especial</h2>
+            <p>Escreva uma mensagem do coração. Ela será revelada com um toque especial na página.</p>
+
+            <div class="field">
+              <label for="mensagem">Sua mensagem</label>
+              <textarea id="mensagem" rows="6" maxlength="600" required placeholder="Escreva algo do fundo do coração..."></textarea>
+              <span class="hint">Máximo de 600 caracteres.</span>
+            </div>
+
+            <div class="form-nav">
+              <button type="button" class="btn btn-secondary prev">← Voltar</button>
+              <button type="button" class="btn btn-primary next">Continuar →</button>
+            </div>
+          </div>
+
+          <!-- Passo 3 -->
+          <div class="form-step" data-step="3">
+            <h2>Fotos e música</h2>
+            <p>Adicione até 4 fotos e a música que marcou a relação. Ambos são opcionais.</p>
+
+            <div class="field">
+              <label for="foto1">Foto 1 (link da imagem)</label>
+              <input type="url" id="foto1" placeholder="https://..." />
+            </div>
+            <div class="field">
+              <label for="foto2">Foto 2 (link da imagem)</label>
+              <input type="url" id="foto2" placeholder="https://..." />
+            </div>
+            <div class="field">
+              <label for="foto3">Foto 3 (link da imagem)</label>
+              <input type="url" id="foto3" placeholder="https://..." />
+            </div>
+            <div class="field">
+              <label for="foto4">Foto 4 (link da imagem)</label>
+              <input type="url" id="foto4" placeholder="https://..." />
+              <span class="hint">Dica: faça upload das fotos no Google Fotos, Imgur ou Drive e cole o link direto da imagem aqui.</span>
+            </div>
+            <div class="field">
+              <label for="musica">Link da música (YouTube)</label>
+              <input type="url" id="musica" placeholder="https://www.youtube.com/watch?v=..." />
+              <span class="hint">Cole o link do vídeo da música de vocês.</span>
+            </div>
+
+            <div class="form-nav">
+              <button type="button" class="btn btn-secondary prev">← Voltar</button>
+              <button type="button" class="btn btn-primary next">Continuar →</button>
+            </div>
+          </div>
+
+          <!-- Passo 4 -->
+          <div class="form-step" data-step="4">
+            <h2>Linha do tempo</h2>
+            <p>Registre até 3 marcos importantes da relação (opcional).</p>
+
+            <div class="field">
+              <label>Marco 1</label>
+              <div class="field-row">
+                <input type="date" id="linha1-data" />
+                <input type="text" id="linha1-titulo" maxlength="40" placeholder="Título (ex: Primeiro encontro)" />
+              </div>
+              <input type="text" id="linha1-texto" maxlength="120" placeholder="Descrição curta (opcional)" style="margin-top:8px;" />
+            </div>
+
+            <div class="field">
+              <label>Marco 2</label>
+              <div class="field-row">
+                <input type="date" id="linha2-data" />
+                <input type="text" id="linha2-titulo" maxlength="40" placeholder="Título (ex: Primeira viagem)" />
+              </div>
+              <input type="text" id="linha2-texto" maxlength="120" placeholder="Descrição curta (opcional)" style="margin-top:8px;" />
+            </div>
+
+            <div class="field">
+              <label>Marco 3</label>
+              <div class="field-row">
+                <input type="date" id="linha3-data" />
+                <input type="text" id="linha3-titulo" maxlength="40" placeholder="Título (ex: Pedido de namoro)" />
+              </div>
+              <input type="text" id="linha3-texto" maxlength="120" placeholder="Descrição curta (opcional)" style="margin-top:8px;" />
+            </div>
+
+            <div class="form-nav">
+              <button type="button" class="btn btn-secondary prev">← Voltar</button>
+              <button type="button" class="btn btn-primary next">Continuar →</button>
+            </div>
+          </div>
+
+          <!-- Passo 5 -->
+          <div class="form-step" data-step="5">
+            <h2>Escolha o estilo</h2>
+            <p>Selecione a paleta de cores da sua página.</p>
+
+            <div class="theme-options" id="theme-options">
+              <label class="theme-option selected">
+                <input type="radio" name="tema" value="rosa" checked />
+                <div class="swatch swatch-rosa"></div>
+                Rosa
+              </label>
+              <label class="theme-option">
+                <input type="radio" name="tema" value="vermelho" />
+                <div class="swatch swatch-vermelho"></div>
+                Vermelho
+              </label>
+              <label class="theme-option">
+                <input type="radio" name="tema" value="roxo" />
+                <div class="swatch swatch-roxo"></div>
+                Roxo
+              </label>
+              <label class="theme-option">
+                <input type="radio" name="tema" value="dourado" />
+                <div class="swatch swatch-dourado"></div>
+                Dourado
+              </label>
+            </div>
+
+            <div class="form-nav">
+              <button type="button" class="btn btn-secondary prev">← Voltar</button>
+              <button type="button" class="btn btn-primary next">Ir para pagamento →</button>
+            </div>
+          </div>
+
+          <!-- Passo 6: Pagamento -->
+          <div class="form-step" data-step="6">
+            <h2>Pagamento via Pix</h2>
+            <p>Escaneie o QR Code com o app do seu banco ou copie a chave Pix abaixo.</p>
+
+            <div class="pix-box">
+              <div class="amount-display" id="valor-pix"></div>
+              <img id="qr-pix" alt="QR Code Pix" width="220" height="220" />
+              <div class="pix-key-row">
+                <input type="text" id="chave-pix" readonly />
+                <button type="button" class="btn btn-secondary" id="btn-copiar-chave">Copiar</button>
+              </div>
+              <span class="hint">Após confirmar o pagamento no seu banco, clique no botão abaixo para gerar sua página na hora.</span>
+            </div>
+
+            <div class="form-nav">
+              <button type="button" class="btn btn-secondary prev">← Voltar</button>
+              <button type="button" class="btn btn-primary" id="btn-gerar">Já paguei, gerar minha página 🎁</button>
+            </div>
+          </div>
+
+          <!-- Passo 7: Resultado -->
+          <div class="form-step" data-step="7">
+            <div class="result-box">
+              <div class="emoji-big">🎉</div>
+              <h2>Seu presente está pronto!</h2>
+              <p>Copie o link abaixo e compartilhe com quem você ama.</p>
+
+              <div class="link-row">
+                <input type="text" id="link-gerado" readonly />
+                <button type="button" class="btn btn-secondary" id="btn-copiar-link">Copiar</button>
+              </div>
+
+              <div class="result-actions">
+                <a id="btn-abrir" href="#" target="_blank" class="btn btn-primary">Abrir presente 🎁</a>
+                <a id="btn-whatsapp-share" href="#" target="_blank" class="btn btn-whatsapp">Enviar pelo WhatsApp</a>
+              </div>
+            </div>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/encode.js"></script>
+  <script src="assets/js/pix.js"></script>
+  <script src="assets/js/criar.js"></script>
+</body>
+</html>

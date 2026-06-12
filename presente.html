@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Um presente especial — Amorize</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body class="gift-page tema-rosa" id="gift-body">
+
+  <section class="gift-hero">
+    <div class="hearts-bg" data-quantidade="14"></div>
+    <div class="container">
+      <div class="from" id="gift-from"></div>
+      <h1 id="gift-title">Para você, com amor 💕</h1>
+      <div class="since" id="gift-since"></div>
+    </div>
+  </section>
+
+  <section class="gift-section">
+    <h2>⏱️ Estamos juntos há</h2>
+    <div class="counter-grid" id="counter-grid"></div>
+  </section>
+
+  <section class="gift-section" id="message-section">
+    <div class="message-card">
+      <h3>Mensagem especial</h3>
+      <p class="message-text" id="message-text"></p>
+      <button class="btn btn-secondary" id="btn-mostrar-mensagem">Mostrar mensagem 💌</button>
+    </div>
+  </section>
+
+  <section class="gift-section" id="gallery-section">
+    <h2>📸 Nossos momentos</h2>
+    <div class="gallery" id="gallery"></div>
+  </section>
+
+  <section class="gift-section" id="music-section">
+    <h2>🎵 Nossa música</h2>
+    <div class="music-card">
+      <iframe id="music-iframe" height="80" allow="autoplay" title="Nossa música"></iframe>
+    </div>
+  </section>
+
+  <section class="gift-section" id="retro-section">
+    <h2>🎞️ Nossa retrospectiva</h2>
+    <div class="retro-card" id="retro-card">
+      <button class="retro-nav prev" id="retro-prev" aria-label="Anterior">‹</button>
+      <button class="retro-nav next" id="retro-next" aria-label="Próximo">›</button>
+      <div class="retro-controls" id="retro-dots"></div>
+    </div>
+  </section>
+
+  <section class="gift-section" id="achievements-section">
+    <h2>🏆 Conquistas</h2>
+    <p class="achievements-summary" id="achievements-summary"></p>
+    <div class="achievements-grid" id="achievements-grid"></div>
+  </section>
+
+  <section class="gift-section" id="timeline-section">
+    <h2>📍 Nossa linha do tempo</h2>
+    <div class="timeline" id="timeline"></div>
+  </section>
+
+  <section class="gift-cta">
+    <p>Gostou desse presente? Crie o seu também 💕</p>
+    <a href="index.html" class="btn btn-primary">Criar meu presente na Amorize</a>
+  </section>
+
+  <script src="assets/js/encode.js"></script>
+  <script src="assets/js/milestones.js"></script>
+  <script src="assets/js/main.js"></script>
+  <script src="assets/js/presente.js"></script>
+</body>
+</html>
