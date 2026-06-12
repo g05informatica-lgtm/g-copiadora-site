@@ -3,11 +3,22 @@ const AMZ_MESES = [
   'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro',
 ];
 
+// Recursos liberados por plano. Links antigos (sem plano) recebem tudo.
+const AMZ_PLANO_RECURSOS = {
+  simples: { musica: false, retrospectiva: false, vitalicio: false },
+  completo: { musica: true, retrospectiva: true, vitalicio: false },
+  vitalicio: { musica: true, retrospectiva: true, vitalicio: true },
+};
+
+let amzRecursos = { musica: true, retrospectiva: true, vitalicio: false };
+
 document.addEventListener('DOMContentLoaded', () => {
   const params = new URLSearchParams(location.search);
   const codificado = params.get('d');
   const dados = codificado ? amzDecode(codificado) : dadosExemplo();
   const inicio = parseDataLocal(dados.data);
+
+  amzRecursos = AMZ_PLANO_RECURSOS[dados.plano] || amzRecursos;
 
   aplicarTema(dados.tema);
   preencherCabecalho(dados, inicio);
@@ -59,6 +70,13 @@ function preencherCabecalho(dados, inicio) {
   document.getElementById('gift-from').textContent = `De ${dados.de}, com todo amor`;
   document.getElementById('gift-title').textContent = `Para ${dados.para} 💕`;
   document.getElementById('gift-since').textContent = `Juntos desde ${formatarData(dados.data)}`;
+
+  if (amzRecursos.vitalicio) {
+    const badge = document.createElement('div');
+    badge.className = 'forever-badge';
+    badge.textContent = 'Para sempre 💎';
+    document.getElementById('gift-since').insertAdjacentElement('afterend', badge);
+  }
 }
 
 /* ---------- Contador em tempo real ---------- */
@@ -159,7 +177,7 @@ function preencherGaleria(dados) {
 
 function preencherMusica(dados) {
   const section = document.getElementById('music-section');
-  if (!dados.musica) {
+  if (!amzRecursos.musica || !dados.musica) {
     section.style.display = 'none';
     return;
   }
@@ -235,6 +253,12 @@ function preencherLinhaDoTempo(dados) {
 /* ---------- Retrospectiva ---------- */
 
 function preencherRetrospectiva(dados, inicio) {
+  const section = document.getElementById('retro-section');
+  if (!amzRecursos.retrospectiva) {
+    section.style.display = 'none';
+    return;
+  }
+
   const diff = calcularDiferenca(inicio, new Date());
 
   const slides = [

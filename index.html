@@ -17,8 +17,8 @@
       <nav class="nav-links">
         <a href="#como-funciona">Como funciona</a>
         <a href="#recursos">Recursos</a>
+        <a href="#planos">Planos</a>
         <a href="#exemplo">Exemplo</a>
-        <a href="#depoimentos">Depoimentos</a>
         <a href="criar.html" class="btn btn-primary">Criar meu presente</a>
       </nav>
       <button class="nav-toggle" aria-label="Abrir menu">
@@ -151,7 +151,19 @@
     </div>
   </section>
 
-  <section id="exemplo">
+  <section id="planos">
+    <div class="container">
+      <div class="section-header">
+        <span class="tag">💸 Planos</span>
+        <h2>Escolha o presente <span class="accent">perfeito</span></h2>
+        <p>Todos os presentes ficam no ar <strong>para sempre</strong>. Escolha o nível de capricho. 💕</p>
+      </div>
+      <div class="plans" id="plans-landing"></div>
+      <p class="plans-note">Pagamento único via Pix · entrega do link na hora · sem mensalidade.</p>
+    </div>
+  </section>
+
+  <section id="exemplo" class="section-alt">
     <div class="container">
       <div class="section-header">
         <span class="tag">👀 Demonstração</span>
@@ -164,7 +176,7 @@
     </div>
   </section>
 
-  <section id="depoimentos" class="section-alt">
+  <section id="depoimentos">
     <div class="container">
       <div class="section-header">
         <span class="tag">💬 Depoimentos</span>
@@ -255,8 +267,27 @@
         { data: '2023-12-24', titulo: 'Primeira viagem juntos', texto: 'Uma virada de ano inesquecível.' },
       ],
       tema: 'rosa',
+      plano: 'vitalicio',
     };
     document.getElementById('link-exemplo').href = `presente.html?d=${amzEncode(exemploDados)}`;
+
+    // Renderiza os cards de planos a partir da configuração central
+    const plansContainer = document.getElementById('plans-landing');
+    AMORIZE_CONFIG.planos.forEach((plano) => {
+      const card = document.createElement('div');
+      card.className = `plan-card${plano.destaque ? ' destaque' : ''}`;
+      const recursos = plano.recursos.map((r) => `<li>${r}</li>`).join('');
+      const selo = plano.destaque ? '<span class="plan-badge">Mais popular</span>' : '';
+      card.innerHTML = `
+        ${selo}
+        <div class="plan-name">${plano.nome}</div>
+        <div class="plan-price">${amzPrecoFormatado(plano.preco)}</div>
+        <div class="plan-resumo">${plano.resumo}</div>
+        <ul class="plan-features">${recursos}</ul>
+        <a href="criar.html" class="btn btn-primary">Escolher ${plano.nome}</a>
+      `;
+      plansContainer.appendChild(card);
+    });
   </script>
 </body>
 </html>

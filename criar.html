@@ -26,8 +26,21 @@
 
         <form id="form-presente">
 
+          <!-- Passo: escolha do plano -->
+          <div class="form-step active" data-step="plano">
+            <h2>Escolha seu plano</h2>
+            <p>Todos os presentes ficam <strong>no ar para sempre</strong>. Escolha o que mais combina com vocês.</p>
+
+            <div class="plan-options" id="plan-options"></div>
+
+            <div class="form-nav">
+              <span></span>
+              <button type="button" class="btn btn-primary next">Continuar →</button>
+            </div>
+          </div>
+
           <!-- Passo 1 -->
-          <div class="form-step active" data-step="1">
+          <div class="form-step" data-step="1">
             <h2>Conte a sua história</h2>
             <p>Vamos começar com os dados básicos do casal.</p>
 
@@ -70,26 +83,15 @@
           <!-- Passo 3 -->
           <div class="form-step" data-step="3">
             <h2>Fotos e música</h2>
-            <p>Adicione até 4 fotos e a música que marcou a relação. Ambos são opcionais.</p>
+            <p>Adicione as fotos do casal e a música que marcou a relação. Tudo é opcional.</p>
 
             <div class="field">
-              <label for="foto1">Foto 1 (link da imagem)</label>
-              <input type="url" id="foto1" placeholder="https://..." />
+              <label>Fotos (link da imagem)</label>
+              <div id="fotos-container"></div>
+              <button type="button" class="btn btn-secondary" id="btn-add-foto" style="margin-top:6px;">+ Adicionar foto</button>
+              <span class="hint" id="fotos-hint">Dica: faça upload das fotos no Google Fotos, Imgur ou Drive e cole o link direto da imagem aqui.</span>
             </div>
-            <div class="field">
-              <label for="foto2">Foto 2 (link da imagem)</label>
-              <input type="url" id="foto2" placeholder="https://..." />
-            </div>
-            <div class="field">
-              <label for="foto3">Foto 3 (link da imagem)</label>
-              <input type="url" id="foto3" placeholder="https://..." />
-            </div>
-            <div class="field">
-              <label for="foto4">Foto 4 (link da imagem)</label>
-              <input type="url" id="foto4" placeholder="https://..." />
-              <span class="hint">Dica: faça upload das fotos no Google Fotos, Imgur ou Drive e cole o link direto da imagem aqui.</span>
-            </div>
-            <div class="field">
+            <div class="field" id="musica-field">
               <label for="musica">Link da música (YouTube)</label>
               <input type="url" id="musica" placeholder="https://www.youtube.com/watch?v=..." />
               <span class="hint">Cole o link do vídeo da música de vocês.</span>
@@ -179,6 +181,7 @@
             <p>Escaneie o QR Code com o app do seu banco ou copie a chave Pix abaixo.</p>
 
             <div class="pix-box">
+              <div class="plan-chosen" id="plano-escolhido"></div>
               <div class="amount-display" id="valor-pix"></div>
               <img id="qr-pix" alt="QR Code Pix" width="220" height="220" />
               <div class="pix-key-row">

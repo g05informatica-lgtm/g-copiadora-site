@@ -3,6 +3,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const progressBar = document.getElementById('progress-bar');
   let current = 0;
 
+  // Plano selecionado (começa no primeiro da lista)
+  let planoAtual = AMORIZE_CONFIG.planos[0];
+
   steps.forEach(() => {
     const span = document.createElement('span');
     progressBar.appendChild(span);
@@ -17,10 +20,11 @@ document.addEventListener('DOMContentLoaded', () => {
     steps.forEach((step, i) => step.classList.toggle('active', i === index));
     current = index;
     atualizarProgresso();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 
-    if (steps[current].dataset.step === '6') {
-      prepararPagamento();
-    }
+    const passo = steps[current];
+    if (passo.querySelector('#fotos-container')) configurarFotosParaPlano();
+    if (passo.querySelector('.pix-box')) prepararPagamento();
   }
 
   function validarPasso(index) {
@@ -47,6 +51,95 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  // -------------------------------------------------------
+  // Seleção de plano
+  // -------------------------------------------------------
+  function renderPlanos() {
+    const container = document.getElementById('plan-options');
+    container.innerHTML = '';
+
+    AMORIZE_CONFIG.planos.forEach((plano) => {
+      const card = document.createElement('label');
+      card.className = `plan-card${plano.destaque ? ' destaque' : ''}${plano.id === planoAtual.id ? ' selected' : ''}`;
+      card.dataset.id = plano.id;
+
+      const recursos = plano.recursos.map((r) => `<li>${r}</li>`).join('');
+      const selo = plano.destaque ? '<span class="plan-badge">Mais popular</span>' : '';
+
+      card.innerHTML = `
+        ${selo}
+        <input type="radio" name="plano" value="${plano.id}" ${plano.id === planoAtual.id ? 'checked' : ''} />
+        <div class="plan-name">${plano.nome}</div>
+        <div class="plan-price">${amzPrecoFormatado(plano.preco)}</div>
+        <div class="plan-resumo">${plano.resumo}</div>
+        <ul class="plan-features">${recursos}</ul>
+      `;
+
+      card.addEventListener('click', () => {
+        planoAtual = plano;
+        container.querySelectorAll('.plan-card').forEach((c) => c.classList.remove('selected'));
+        card.classList.add('selected');
+        card.querySelector('input[type="radio"]').checked = true;
+      });
+
+      container.appendChild(card);
+    });
+  }
+
+  // -------------------------------------------------------
+  // Fotos dinâmicas (limite conforme o plano) + música condicional
+  // -------------------------------------------------------
+  function novaFotoInput(valor = '') {
+    const input = document.createElement('input');
+    input.type = 'url';
+    input.className = 'foto-input';
+    input.placeholder = 'https://...';
+    input.value = valor;
+    return input;
+  }
+
+  function contarFotos() {
+    return document.querySelectorAll('#fotos-container .foto-input').length;
+  }
+
+  function configurarFotosParaPlano() {
+    const container = document.getElementById('fotos-container');
+    const btnAdd = document.getElementById('btn-add-foto');
+    const hint = document.getElementById('fotos-hint');
+    const musicaField = document.getElementById('musica-field');
+    const max = planoAtual.maxFotos;
+
+    // Mantém as fotos já digitadas, mas respeita o limite do plano
+    const existentes = Array.from(container.querySelectorAll('.foto-input'))
+      .map((i) => i.value)
+      .filter(Boolean);
+
+    container.innerHTML = '';
+    const inicial = Math.max(2, Math.min(existentes.length, max));
+    for (let i = 0; i < inicial; i++) {
+      container.appendChild(novaFotoInput(existentes[i] || ''));
+    }
+
+    const ilimitado = max >= 30;
+    hint.textContent = ilimitado
+      ? 'Fotos ilimitadas neste plano. Cole o link direto de cada imagem (Google Fotos, Imgur, Drive...).'
+      : `Seu plano permite até ${max} fotos. Cole o link direto de cada imagem.`;
+
+    btnAdd.style.display = contarFotos() >= max ? 'none' : '';
+
+    // Música só nos planos que liberam o recurso
+    musicaField.style.display = planoAtual.musica ? '' : 'none';
+  }
+
+  document.getElementById('btn-add-foto').addEventListener('click', () => {
+    const container = document.getElementById('fotos-container');
+    if (contarFotos() >= planoAtual.maxFotos) return;
+    container.appendChild(novaFotoInput());
+    if (contarFotos() >= planoAtual.maxFotos) {
+      document.getElementById('btn-add-foto').style.display = 'none';
+    }
+  });
+
   // Seleção visual do tema
   document.querySelectorAll('#theme-options .theme-option').forEach((option) => {
     option.addEventListener('click', () => {
@@ -56,21 +149,23 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  renderPlanos();
   mostrarPasso(0);
 
   // -------------------------------------------------------
   // Pagamento (Pix)
   // -------------------------------------------------------
   function prepararPagamento() {
-    const valor = AMORIZE_CONFIG.preco;
-    document.getElementById('valor-pix').textContent = `R$ ${valor.toFixed(2).replace('.', ',')}`;
+    const valor = planoAtual.preco;
+    document.getElementById('plano-escolhido').textContent = `Plano ${planoAtual.nome}`;
+    document.getElementById('valor-pix').textContent = amzPrecoFormatado(valor);
 
     const payload = gerarPayloadPix({
       chave: AMORIZE_CONFIG.pix.chave,
       nome: AMORIZE_CONFIG.pix.nome,
       cidade: AMORIZE_CONFIG.pix.cidade,
       valor,
-      descricao: AMORIZE_CONFIG.marca,
+      descricao: `${AMORIZE_CONFIG.marca} ${planoAtual.nome}`,
     });
 
     document.getElementById('chave-pix').value = AMORIZE_CONFIG.pix.chave;
@@ -102,9 +197,10 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   function coletarDados() {
-    const fotos = ['foto1', 'foto2', 'foto3', 'foto4']
-      .map((id) => document.getElementById(id).value.trim())
-      .filter(Boolean);
+    const fotos = Array.from(document.querySelectorAll('#fotos-container .foto-input'))
+      .map((input) => input.value.trim())
+      .filter(Boolean)
+      .slice(0, planoAtual.maxFotos);
 
     const linha = [1, 2, 3]
       .map((n) => ({
@@ -116,16 +212,20 @@ document.addEventListener('DOMContentLoaded', () => {
       .sort((a, b) => (a.data || '').localeCompare(b.data || ''));
 
     const tema = document.querySelector('input[name="tema"]:checked').value;
+    const musica = planoAtual.musica
+      ? extrairYoutubeId(document.getElementById('musica').value.trim())
+      : '';
 
     return {
       de: document.getElementById('de').value.trim(),
       para: document.getElementById('para').value.trim(),
       data: document.getElementById('data').value,
       mensagem: document.getElementById('mensagem').value.trim(),
-      musica: extrairYoutubeId(document.getElementById('musica').value.trim()),
+      musica,
       fotos,
       linha,
       tema,
+      plano: planoAtual.id,
     };
   }
 

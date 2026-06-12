@@ -37,7 +37,13 @@ assets/js/
 ```js
 const AMORIZE_CONFIG = {
   marca: 'Amorize',
-  preco: 19.9,
+  planos: [
+    // Cada plano define preço, limite de fotos e recursos liberados.
+    // Todos os presentes ficam no ar para sempre (sem expiração real).
+    { id: 'simples',   nome: 'Simples',   preco: 19.9, maxFotos: 8,  musica: false, retrospectiva: false, vitalicio: false, /* ... */ },
+    { id: 'completo',  nome: 'Completo',  preco: 34.9, maxFotos: 30, musica: true,  retrospectiva: true,  vitalicio: false, destaque: true, /* ... */ },
+    { id: 'vitalicio', nome: 'Vitalício', preco: 49.9, maxFotos: 30, musica: true,  retrospectiva: true,  vitalicio: true,  /* ... */ },
+  ],
   pix: {
     chave: 'sua-chave-pix-real',   // e-mail, telefone, CPF/CNPJ ou chave aleatória
     nome: 'SEU NOME OU EMPRESA',   // como está cadastrado no Pix (máx. 25 caracteres)
@@ -46,6 +52,11 @@ const AMORIZE_CONFIG = {
   whatsapp: '55DDDNUMERO',         // usado no rodapé/suporte
 };
 ```
+
+> **Planos:** o valor de cada plano vira o valor do Pix automaticamente, e os recursos
+> (`maxFotos`, `musica`, `retrospectiva`, `vitalicio`) controlam o que aparece no
+> formulário e na página final. Como o site é estático (sem servidor), nenhum presente
+> expira de verdade — anuncie como "acesso para sempre".
 
 > ⚠️ **Importante:** o QR Code é gerado por um serviço público (api.qrserver.com) a partir
 > do payload Pix. Teste o pagamento de verdade (com valor baixo) antes de divulgar o site,
@@ -76,7 +87,7 @@ Qualquer um destes serve, sem precisar configurar nada além do `config.js`:
 
 - **Cores/tema**: variáveis CSS em `assets/css/style.css` (`:root`) e classes
   `.tema-rosa`, `.tema-vermelho`, `.tema-roxo`, `.tema-dourado`.
-- **Preço**: `AMORIZE_CONFIG.preco`.
+- **Planos e preços**: `AMORIZE_CONFIG.planos` (nome, preço, limite de fotos e recursos).
 - **Conquistas**: edite `assets/js/milestones.js`.
 - **Textos da landing page**: edite diretamente `index.html` (seções "Recursos",
   "Como funciona", "Depoimentos").
