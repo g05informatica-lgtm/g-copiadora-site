@@ -170,6 +170,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // sucesso para montar o link DEPOIS que o pagamento for confirmado.
     localStorage.setItem('amz_pending', amzEncode(dados));
 
+    // Meta Pixel: usuário iniciou o checkout
+    if (typeof amzTrackInitiateCheckout === 'function') amzTrackInitiateCheckout(planoAtual.preco);
+
     btn.disabled = true;
     btn.textContent = 'Gerando pagamento...';
 

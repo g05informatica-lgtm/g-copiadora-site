@@ -37,7 +37,7 @@ function iniciarVerificacao(paymentId, d, tentativa) {
     .then((r) => r.json())
     .then((info) => {
       if (info.status === 'approved') {
-        revelarPresente(d);
+        revelarPresente(d, info.valor);
         return;
       }
       if (info.status === 'rejected' || info.status === 'cancelled') {
@@ -60,7 +60,10 @@ function iniciarVerificacao(paymentId, d, tentativa) {
     });
 }
 
-function revelarPresente(d) {
+function revelarPresente(d, valor) {
+  // Meta Pixel: compra aprovada (valor real vindo do Mercado Pago)
+  if (typeof amzTrackPurchase === 'function') amzTrackPurchase(valor);
+
   const link = `${location.origin}/presente.html?d=${d}`;
   document.getElementById('link-gerado').value = link;
   document.getElementById('btn-abrir').href = link;
