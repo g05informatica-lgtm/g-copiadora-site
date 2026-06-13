@@ -75,12 +75,8 @@ module.exports = async (req, res) => {
       return;
     }
 
-    // Com token de TESTE, o Mercado Pago também devolve um link de sandbox
-    // (simulador) que permite escolher Aprovado/Rejeitado/Pendente sem
-    // precisar logar com uma conta de teste. Priorizamos esse link quando
-    // disponível — com token de produção ele não vem, então cai no normal.
     res.status(200).json({
-      init_point: data.sandbox_init_point || data.init_point,
+      init_point: data.init_point,
       sandbox_init_point: data.sandbox_init_point,
       id: data.id,
       external_reference: externalRef,
