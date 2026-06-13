@@ -6,7 +6,7 @@
    Enquanto estiver com o valor de exemplo, o pixel NÃO carrega
    (evita disparar evento pra conta errada).
    ============================================================ */
-const META_PIXEL_ID = '2047566616644325';
+const META_PIXEL_ID = '2089994528217831';
 
 (function () {
   if (!META_PIXEL_ID || META_PIXEL_ID.indexOf('COLE') === 0) return; // sem ID válido = não carrega
